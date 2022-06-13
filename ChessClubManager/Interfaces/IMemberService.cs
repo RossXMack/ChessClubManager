@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace ChessClubManager.Interfaces
 {
-    public interface IMember
+    public interface IMemberService
     {        
         int AddMember(Member member);
 
-        Member GetMember(int id);
+        Member GetMember(string id);
 
         IEnumerable<Member> GetAllMembers();
 
         int UpdateMember(Member member);
         
-        int DeleteMember(int id);
+        int DeleteMember(string id);
     }
 }

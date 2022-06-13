@@ -27,6 +27,10 @@ namespace ChessClubManager.Models
 
             modelBuilder.Entity<Match>(entity =>
             {
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasMaxLength(36);
+
                 entity.Property(e => e.Created).HasColumnType("datetime");
 
                 entity.Property(e => e.MatchDate).HasColumnType("datetime");
@@ -36,6 +40,18 @@ namespace ChessClubManager.Models
 
             modelBuilder.Entity<MatchParticipant>(entity =>
             {
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasMaxLength(36);
+
+                entity.Property(e => e.MatchId)
+                    .IsRequired()
+                    .HasMaxLength(36);
+
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasMaxLength(36);
+
                 entity.Property(e => e.Created).HasColumnType("datetime");
 
                 entity.Property(e => e.Updated).HasColumnType("datetime");
@@ -43,6 +59,10 @@ namespace ChessClubManager.Models
 
             modelBuilder.Entity<Member>(entity =>
             {
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasMaxLength(36);
+
                 entity.Property(e => e.Birthday).HasColumnType("date");
 
                 entity.Property(e => e.Created).HasColumnType("datetime");

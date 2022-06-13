@@ -16,7 +16,7 @@ export class MemberService {
     return this.http.get<Member[]>(this.baseURL);
   }
 
-  getMemberById(id: number): Observable<Member> {
+  getMemberById(id: string): Observable<Member> {
     return this.http.get<Member>(this.baseURL + id);
   }
 
@@ -28,7 +28,7 @@ export class MemberService {
     return this.http.put(this.baseURL, member);
   }
 
-  deleteMember(id: number): Observable<any> {
+  deleteMember(id: string): Observable<any> {
     return this.http.delete(this.baseURL + id);
   }
 }

@@ -7,7 +7,7 @@ namespace ChessClubManager.Models
 {
     public partial class Member
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
@@ -15,7 +15,12 @@ namespace ChessClubManager.Models
         public DateTime JoinDate { get; set; }
         public int GamesPlayed { get; set; }
         public int CurrentRank { get; set; }
+
+        #region Audits
+
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        #endregion
     }
 }

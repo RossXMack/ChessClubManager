@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Member } from '../models/member';
-import { MemberService } from '../services/member.service';
+import { Member } from '../../models/member';
+import { MemberService } from '../../services/member.service';
 
 @Component({
   selector: 'app-add-member',
@@ -13,7 +13,7 @@ export class AddMemberComponent implements OnInit {
 
   memberForm: FormGroup;
   title = 'Create';
-  memberId: number = 0;
+  memberId: string = '0';
   errorMessage: any;
   submitted = false;
 
@@ -28,7 +28,7 @@ export class AddMemberComponent implements OnInit {
     };
 
     this.memberForm = this.fb.group({
-      id: 0,
+      id: [''],
       name: ['', [Validators.required]],
       surname: ['', [Validators.required]],
       email: [''],
@@ -39,7 +39,7 @@ export class AddMemberComponent implements OnInit {
 
   ngOnInit(): void {
     debugger
-    if (this.memberId > 0) {
+    if (this.memberId !== '0') {
 
       this.title = 'Edit';
 

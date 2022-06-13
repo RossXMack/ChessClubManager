@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Member } from '../models/member';
-import { MemberService } from '../services/member.service';
+import { Member } from '../../models/member';
+import { MemberService } from '../../services/member.service';
 
 @Component({
   selector: 'app-fetch-member',
@@ -23,7 +23,7 @@ export class FetchMembersComponent implements OnInit {
       .subscribe((result) => (this.members = result));
   }
 
-  delete(memberId: number): void {
+  delete(memberId: string): void {
     const ans = confirm(
       'Do you want to delete the member with Id: ' + memberId
     )

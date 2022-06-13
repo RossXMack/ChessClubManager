@@ -26,7 +26,8 @@ namespace ChessClubManager
         {            
             services.AddDbContext<ChessClubManagerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IMember, MemberDataAccessLayer>();
+            services.AddTransient<IMemberService, MemberService>();
+            services.AddTransient<IMatchService, MatchService>();
 
             services.AddMvc();
             services.AddControllersWithViews();

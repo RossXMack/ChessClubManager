@@ -13,40 +13,40 @@ namespace ChessClubManager.Controllers
     public class MemberController : ControllerBase
     {
 
-        private readonly IMember objMember;
+        private readonly IMemberService memberService;
 
-        public MemberController(IMember member)
+        public MemberController(IMemberService memberService)
         {
-            this.objMember = member;
+            this.memberService = memberService;
         }
 
         [HttpGet]
         public IEnumerable<Member> Get()
         {
-            return objMember.GetAllMembers();            
+            return memberService.GetAllMembers();            
         }
 
         [HttpGet("{id}")]
-        public Member Get(int id)
+        public Member Get(string id)
         {
-            return objMember.GetMember(id);
+            return memberService.GetMember(id);
         }
 
         [HttpPost]
         public int Post([FromBody] Member member)
         {
-            return objMember.AddMember(member);
+            return memberService.AddMember(member);
         }
 
         [HttpPut]
         public int Put([FromBody] Member member)
         {
-            return objMember.UpdateMember(member);
+            return memberService.UpdateMember(member);
         }
 
         [HttpDelete("{id}")]
-        public int Delete(int id) {
-            return objMember.DeleteMember(id);
+        public int Delete(string id) {
+            return memberService.DeleteMember(id);
         }
     }
 }

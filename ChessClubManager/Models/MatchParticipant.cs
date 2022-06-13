@@ -7,11 +7,16 @@ namespace ChessClubManager.Models
 {
     public partial class MatchParticipant
     {
-        public int Id { get; set; }
-        public int MatchId { get; set; }
-        public int MemberId { get; set; }
+        public string Id { get; set; }
+        public string MatchId { get; set; }
+        public string MemberId { get; set; }
         public int Result { get; set; }
+
+        #region Audits
+
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        #endregion
     }
 }
