@@ -21,9 +21,19 @@ namespace ChessClubManager.DataAccess
         public int AddMember(Member member)
         {
             try
-            {
+            {                
+                // add default member info
+                member.GamesPlayed = 0;
+                member.CurrentRank = db.Members.Count() + 1;
+
+                // update audit info
+                member.Created = DateTime.Now;
+                member.Updated = DateTime.Now;
+
                 db.Members.Add(member);
+
                 db.SaveChanges();
+
                 return 0;
             }
             catch 
@@ -36,8 +46,12 @@ namespace ChessClubManager.DataAccess
         {
             try
             {
+                // update audit info                
+                member.Updated = DateTime.Now;
                 db.Entry(member).State = EntityState.Modified;
+
                 db.SaveChanges();
+
                 return 0;
             }
             catch 
@@ -52,7 +66,9 @@ namespace ChessClubManager.DataAccess
             {
                 Member mem = db.Members.Find(id);
                 db.Members.Remove(mem);
+
                 db.SaveChanges();
+
                 return 0;
             }
             catch 

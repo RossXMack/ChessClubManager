@@ -1,0 +1,53 @@
+<h1>{{ title }} </h1>
+<h3> Member </h3>
+<hr />
+
+<form [formGroup]="memberForm" (ngSubmit)="save()">
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Name</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="name" />
+
+    </div>
+    <!-- <span class="text-danger"
+          *ngIf="
+            (registerFormControl['Name'].touched || submitted) && registerFormControl.['Name'].errors?.required
+            ">
+      Name is required.
+    </span> -->
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Surname</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="surname" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Email</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="email" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Birthday</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="birthday" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Join Date</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="joinDate" />
+    </div>
+  </div>
+
+  <hr />
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button class="btn btn-danger" (click)="cancel()">Cancel</button>
+  </div>
+</form>

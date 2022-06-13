@@ -1,3 +1,5 @@
+using ChessClubManager.DataAccess;
+using ChessClubManager.Interfaces;
 using ChessClubManager.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +25,8 @@ namespace ChessClubManager
         public void ConfigureServices(IServiceCollection services)
         {            
             services.AddDbContext<ChessClubManagerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IMember, MemberDataAccessLayer>();
 
             services.AddMvc();
             services.AddControllersWithViews();

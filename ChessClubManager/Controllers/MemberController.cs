@@ -5,9 +5,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ChessClubManager_Backend.Controllers
+namespace ChessClubManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -45,7 +44,7 @@ namespace ChessClubManager_Backend.Controllers
             return objMember.UpdateMember(member);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public int Delete(int id) {
             return objMember.DeleteMember(id);
         }
