@@ -48,7 +48,7 @@ namespace ChessClubManager.Tests
 
             // W2a. playerRank=12 opponentRank=10 result=Win    edge case? adjacent + 1
             // based on the rules this test case creates an invalid ranking. winner moves to 11, loser moves to 11.
-            // making an assumption here that since the loser beat the winner, he moves forward to the losers rank.
+            // making an assumption here that since the winner beat the loser, he moves forward to the losers rank.
             var resultW2a = calculateNewPlayerRanking(12, 10, MatchResult.Win);
             Assert.Equal(10, resultW2a);
 
