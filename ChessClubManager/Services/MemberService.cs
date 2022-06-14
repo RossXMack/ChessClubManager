@@ -13,13 +13,16 @@ namespace ChessClubManager.DataAccess
 
         private readonly ChessClubManagerContext dbContext;
 
+        private IRankingService rankingService;
+
         #endregion
 
         #region Constructor
 
-        public MemberService(ChessClubManagerContext dbContext)
+        public MemberService(ChessClubManagerContext dbContext, IRankingService rankingService)
         {
             this.dbContext = dbContext;
+            this.rankingService = rankingService;
         }
 
         #endregion
@@ -30,7 +33,7 @@ namespace ChessClubManager.DataAccess
         {
             try
             {
-                return dbContext.Members?.ToList().OrderBy(x => x.Id);
+                return dbContext.Members?.ToList().OrderBy(x => x.CurrentRank);
             }
             catch
             {
@@ -58,6 +61,7 @@ namespace ChessClubManager.DataAccess
                 // add default member info
                 member.Id = Guid.NewGuid().ToString();
                 member.GamesPlayed = 0;
+
                 // new member starts as lowest rank
                 member.CurrentRank = dbContext.Members.Count() + 1;
 
@@ -99,10 +103,13 @@ namespace ChessClubManager.DataAccess
         {
             try
             {
-                Member mem = dbContext.Members.Find(id);
-                dbContext.Members.Remove(mem);
+                Member member = dbContext.Members.Find(id);
+                // todo: checkForNulls.. all over.
 
-                // todo: update rankings when member is deleted.
+                dbContext.Members.Remove(member);
+
+                // we need to update the rank list after deleting the member as each person behind him has to move up in rank to fill the gap.
+                this.rankingService.UpdateRankList(member.CurrentRank);
 
                 dbContext.SaveChanges();
 

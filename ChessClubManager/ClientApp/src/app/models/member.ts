@@ -5,4 +5,6 @@ export class Member {
   email: string;
   birthday: Date;
   joinDate: Date;
+  gamesPlayed: number;
+  currentRank: number;
 }

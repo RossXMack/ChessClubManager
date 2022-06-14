@@ -1,5 +1,6 @@
 ﻿using ChessClubManager.Interfaces;
 using ChessClubManager.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,13 +87,18 @@ namespace ChessClubManager.DataAccess
                     participant.Updated = DateTime.Now;
                     
                     dbContext.MatchParticipants.Add(participant);
+
+                    // update games played
+                    Member member = dbContext.Members.Find(participant.MemberId);
+                    member.GamesPlayed = member.GamesPlayed + match.GamesPlayed;
+                    dbContext.Entry(member).State = EntityState.Modified;
                 }
 
                 // add match
                 dbContext.Matches.Add(match);
 
                 // calculate new rankings
-                this.rankingService.CalculateNewRankings(match);                
+                this.rankingService.CalculateNewRankings(match);                                
 
                 dbContext.SaveChanges();
 

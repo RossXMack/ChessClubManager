@@ -3,6 +3,7 @@ using ChessClubManager.Interfaces;
 using ChessClubManager.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,23 +27,74 @@ namespace ChessClubManager.DataAccess
         #endregion
 
         #region Public Methods
-        // Calculates the new rankings of each player based on the supplied match param, then updates affected current rankings in members table.
+        // Calculates the new rankings of each player based on the supplied match param, then updates effected current rankings in members table.
         public void CalculateNewRankings(Match match)
         {
             try
-            {
-                // get player ranks
-                var player1Rank = dbContext.Members.Find(match.Participants[0].MemberId).CurrentRank;
-                var player2Rank = dbContext.Members.Find(match.Participants[1].MemberId).CurrentRank;
+            {   
+                // get our players current ranks
+                var player1PrevRank = dbContext.Members.Find(match.Participants[0].MemberId).CurrentRank;
+                var player2PrevRank = dbContext.Members.Find(match.Participants[1].MemberId).CurrentRank;
 
-                var player1NewRank = calculateNewPlayerRanking(player1Rank, player2Rank, match.Participants[0].MatchResult);
-                var player2NewRank = calculateNewPlayerRanking(player2Rank, player1Rank, match.Participants[1].MatchResult);
+                // calculate our players new ranks based on the match
+                var player1NewRank = calculateNewPlayerRanking(player1PrevRank, player2PrevRank, match.Participants[0].MatchResult);
+                var player2NewRank = calculateNewPlayerRanking(player2PrevRank, player1PrevRank, match.Participants[1].MatchResult);
+                                
+                // get our ranking list boundaries for sublist using our old ranks - previous rankings above this and below this would remain uneffected.
+                var higherRankBoundary = player1PrevRank < player2PrevRank ? player1PrevRank : player2PrevRank;
+                var lowerRankBoundary = player1PrevRank > player2PrevRank ? player1PrevRank : player2PrevRank;
 
-                // todo: update our current rankings in the members table.
+                // we don't want to db update the entire members list every time a match is added, so we getting a subsection of the entire list demarcated by our boundaries.
+                var subList = dbContext.Members
+                    .Where(m => m.CurrentRank >= higherRankBoundary && m.CurrentRank <= lowerRankBoundary)
+                    .Select(subEntry => new TempRankEntry { Member = subEntry, sortingRank = subEntry.CurrentRank }
+                    ).ToList();
+
+                // update new ranks to subList using decimal to displace previous rank correctly. 
+                // if moving up in rank, previous rank moves down. 
+                // if moving down in rank, previous rank moves up.
+                if (player1NewRank > player1PrevRank)                
+                    subList.Find(m => m.Member.Id == match.Participants[0].MemberId).sortingRank = Convert.ToDouble(player1NewRank) + 0.1;
+                else                
+                   subList.Find(m => m.Member.Id == match.Participants[0].MemberId).sortingRank = Convert.ToDouble(player1NewRank) - 0.1;
                 
+                if (player2NewRank > player2PrevRank)                
+                    subList.Find(m => m.Member.Id == match.Participants[1].MemberId).sortingRank = Convert.ToDouble(player2NewRank) - 0.1;
+                else                
+                    subList.Find(m => m.Member.Id == match.Participants[1].MemberId).sortingRank = Convert.ToDouble(player2NewRank) + 0.1;                                
+
+                // sort subList by the new sorting rank column generated above.
+                var sortedSubList = subList.OrderBy(s => s.sortingRank);
+
+                // rerank the newly sorted list based on high boundary to low boundary.
+                int newRank = higherRankBoundary;
+                foreach(var entry in sortedSubList)
+                {
+                    entry.Member.CurrentRank = newRank;
+                    this.dbContext.Entry(entry.Member).State = EntityState.Modified;
+                    newRank++;
+                }
             }
             catch {
                 throw;
+            }
+        }
+
+        public void UpdateRankList(int removedRank) {            
+            // we don't want to db update the entire members list every time a member is removed, so we starting at removedRank to end.
+            var subList = dbContext.Members
+                .Where(m => m.CurrentRank > removedRank).ToList();
+            
+            // sort subList by current rank.
+            var sortedSubList = subList.OrderBy(s => s.CurrentRank);
+
+            // rerank the newly sorted list starting at removedRank and process to the end.
+            int newRank = removedRank;
+            foreach (var entry in sortedSubList)
+            {
+                entry.CurrentRank = newRank;
+                this.dbContext.Entry(entry).State = EntityState.Modified;
+                newRank++;
             }
         }
 
@@ -132,5 +184,11 @@ namespace ChessClubManager.DataAccess
         }
 
         #endregion
+    }
+
+    class TempRankEntry {
+        public Member Member { get; set; }
+        
+        public double sortingRank { get; set; }
     }
 }
