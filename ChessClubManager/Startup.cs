@@ -28,6 +28,7 @@ namespace ChessClubManager
 
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IRankingService, RankingService>();
 
             services.AddMvc();
             services.AddControllersWithViews();

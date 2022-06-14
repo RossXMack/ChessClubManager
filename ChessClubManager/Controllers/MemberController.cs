@@ -1,10 +1,8 @@
 ﻿using ChessClubManager.Interfaces;
 using ChessClubManager.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ChessClubManager.Controllers
 {
@@ -35,12 +33,60 @@ namespace ChessClubManager.Controllers
         [HttpPost]
         public int Post([FromBody] Member member)
         {
+            #region Validate Member Info
+
+            if (string.IsNullOrEmpty(member.Name))
+            {
+                throw new Exception("Exception - MemberController(Post): Member name is a required field");
+            }
+
+            if (string.IsNullOrEmpty(member.Surname))
+            {
+                throw new Exception("Exception - MemberController(Post): Member surname is a required field");
+            }
+
+            if (string.IsNullOrEmpty(member.Email))
+            {
+                throw new Exception("Exception - MemberController(Post): Member email is a required field");
+            }
+
+            if (member.Birthday > DateTime.Now)
+            {
+                throw new Exception("Exception - MemberController(Post): Birthday cannot be in the future");
+            }
+
+            #endregion
+
             return memberService.AddMember(member);
         }
 
         [HttpPut]
         public int Put([FromBody] Member member)
         {
+            #region Validate Member Info
+
+            if (string.IsNullOrEmpty(member.Name))
+            {
+                throw new Exception("Exception - MemberController(Put): Member name is a required field");
+            }
+
+            if (string.IsNullOrEmpty(member.Surname))
+            {
+                throw new Exception("Exception - MemberController(Put): Member surname is a required field");
+            }
+
+            if (string.IsNullOrEmpty(member.Email))
+            {
+                throw new Exception("Exception - MemberController(Put): Member email is a required field");
+            }
+
+            if (member.Birthday > DateTime.Now)
+            {
+                throw new Exception("Exception - MemberController(Put): Birthday cannot be in the future");
+            }
+
+            #endregion
+
             return memberService.UpdateMember(member);
         }
 

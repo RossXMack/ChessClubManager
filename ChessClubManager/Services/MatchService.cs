@@ -1,6 +1,5 @@
 ﻿using ChessClubManager.Interfaces;
 using ChessClubManager.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +12,16 @@ namespace ChessClubManager.DataAccess
 
         private readonly ChessClubManagerContext dbContext;
 
+        private IRankingService rankingService;
+
         #endregion
 
         #region Constructor
 
-        public MatchService(ChessClubManagerContext dbContext)
+        public MatchService(ChessClubManagerContext dbContext, IRankingService rankingService)
         {
             this.dbContext = dbContext;
+            this.rankingService = rankingService;
         }
 
         #endregion
@@ -64,26 +66,7 @@ namespace ChessClubManager.DataAccess
         public int AddMatch(Match match)
         {
             try
-            {
-                #region Validate Match Info
-
-                if (match.Participants.Count != 2)
-                {
-                    throw new Exception("Match Validation Exception: Invalid Participation Count");
-                }
-
-                if ((match.Participants[0].Result != 0) && (match.Participants[0].Result == match.Participants[1].Result))
-                {
-                    throw new Exception("Match Validation Exception: Invalid Match Result");
-                }
-
-                if (match.MatchDate > DateTime.Now)
-                {
-                    throw new Exception("Match Validation Exception: Match date cannot be in the future");
-                }
-
-                #endregion
-
+            {                
                 // add default match info
                 match.Id = Guid.NewGuid().ToString();
 
@@ -108,6 +91,9 @@ namespace ChessClubManager.DataAccess
                 // add match
                 dbContext.Matches.Add(match);
 
+                // calculate new rankings
+                this.rankingService.CalculateNewRankings(match);                
+
                 dbContext.SaveChanges();
 
                 return 0;
@@ -121,7 +107,7 @@ namespace ChessClubManager.DataAccess
         #endregion
 
         #region Private Methods
-
+        
         #endregion
     }
 }

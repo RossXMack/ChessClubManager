@@ -54,16 +54,7 @@ namespace ChessClubManager.DataAccess
         public int AddMember(Member member)
         {
             try
-            {
-                #region Validate Member Info
-                
-                if (member.Birthday > DateTime.Now)
-                {
-                    throw new Exception("Member Validation Exception: Birthday cannot be in the future");
-                }
-
-                #endregion
-
+            {                
                 // add default member info
                 member.Id = Guid.NewGuid().ToString();
                 member.GamesPlayed = 0;
@@ -110,6 +101,8 @@ namespace ChessClubManager.DataAccess
             {
                 Member mem = dbContext.Members.Find(id);
                 dbContext.Members.Remove(mem);
+
+                // todo: update rankings when member is deleted.
 
                 dbContext.SaveChanges();
 
