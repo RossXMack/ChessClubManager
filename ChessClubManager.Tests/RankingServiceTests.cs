@@ -26,6 +26,11 @@ namespace ChessClubManager.Tests
             // D4. playerRank=15 opponentRank=10 result=Draw   difference=5        expected result = move to rank 14 (move one rank up).
             var resultD4 = calculateNewPlayerRanking(15, 10, MatchResult.Draw);
             Assert.Equal(14, resultD4);
+
+            // D5. playerRank=2 opponentRank=1 result=Draw   
+            // boundary test
+            var resultD5 = calculateNewPlayerRanking(2, 1, MatchResult.Draw);
+            Assert.Equal(2, resultD5);
         }
 
         [Fact]
@@ -41,15 +46,36 @@ namespace ChessClubManager.Tests
             var resultW2 = calculateNewPlayerRanking(16, 10, MatchResult.Win);
             Assert.Equal(13, resultW2);
 
-            // W3. playerRank=12 opponentRank=11 result=Win
-            // Checking adjacent test.
-            var resultW3 = calculateNewPlayerRanking(12, 11, MatchResult.Win);
-            Assert.Equal(11, resultW3);
+            // W2a. playerRank=12 opponentRank=10 result=Win    edge case? adjacent + 1
+            // based on the rules this test case creates an invalid ranking. winner moves to 11, loser moves to 11.
+            // making an assumption here that since the loser beat the winner, he moves forward to the losers rank.
+            var resultW2a = calculateNewPlayerRanking(12, 10, MatchResult.Win);
+            Assert.Equal(10, resultW2a);
 
-            // W4. playerRank=11 opponentRank=12 result=Win
-            // Checking adjacent test.
-            var resultW4 = calculateNewPlayerRanking(11, 12, MatchResult.Win);
-            Assert.Equal(11, resultW3);
+            // checking boundary of W2a.
+            var resultW2b = calculateNewPlayerRanking(13, 10, MatchResult.Win);
+            Assert.Equal(12, resultW2b);
+
+            // W3. playerRank=11 opponentRank=10 result=Win
+            // Check adjacent test.
+            var resultW3 = calculateNewPlayerRanking(11, 10, MatchResult.Win);
+            Assert.Equal(10, resultW3);
+            
+            // W4. playerRank=10 opponentRank=11 result=Win
+            // Check adjacent test.
+            var resultW4 = calculateNewPlayerRanking(10, 11, MatchResult.Win);
+            Assert.Equal(10, resultW4);
+
+            // W5. playerRank=1 opponentRank=2 result=Win
+            // Check boundary.
+            var resultW5 = calculateNewPlayerRanking(1, 2, MatchResult.Win);
+            Assert.Equal(1, resultW5);
+
+            // W6. playerRank=2 opponentRank=1 result=Win
+            // Check boundary.
+            var resultW6 = calculateNewPlayerRanking(2, 1, MatchResult.Win);
+            Assert.Equal(1, resultW6);
+
         }
 
         [Fact]
@@ -65,15 +91,25 @@ namespace ChessClubManager.Tests
             var resultL2 = calculateNewPlayerRanking(10, 16, MatchResult.Loss);
             Assert.Equal(11, resultL2);
 
-            // L3. playerRank=12 opponentRank=11 result=Loss
+            // L3. playerRank=11 opponentRank=10 result=Loss
             // Checking adjacent test.
-            var resultL3 = calculateNewPlayerRanking(12, 11, MatchResult.Loss);
-            Assert.Equal(12, resultL3);
+            var resultL3 = calculateNewPlayerRanking(11, 10, MatchResult.Loss);
+            Assert.Equal(11, resultL3);
 
-            // L4. playerRank=11 opponentRank=12 result=Loss
+            // L4. playerRank=10 opponentRank=11 result=Loss
             // Checking adjacent test.
-            var resultL4 = calculateNewPlayerRanking(11, 12, MatchResult.Loss);
-            Assert.Equal(12, resultL3);
+            var resultL4 = calculateNewPlayerRanking(10, 11, MatchResult.Loss);
+            Assert.Equal(11, resultL3);
+
+            // W5. playerRank=1 opponentRank=2 result=Win
+            // Check boundary.
+            var resultL5 = calculateNewPlayerRanking(1, 2, MatchResult.Loss);
+            Assert.Equal(2, resultL5);
+
+            // W6. playerRank=2 opponentRank=1 result=Win
+            // Check boundary.
+            var resultL6 = calculateNewPlayerRanking(2, 1, MatchResult.Loss);
+            Assert.Equal(2, resultL6);
         }
 
         #region Private Methods
@@ -139,6 +175,7 @@ namespace ChessClubManager.Tests
             switch (rankDifference)
             {
                 case 1: return playerRank - 1;                                           // adjacent so move one rank up.
+                case 2: return playerRank - 2;                                           // edge case, cannot have same rank. promote winner to empty rank.
                 default: return playerRank - Convert.ToInt32(rankDifference/2);          // move up ranking by split (ignore decimal).                 
             }
         }

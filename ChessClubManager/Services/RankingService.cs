@@ -126,6 +126,7 @@ namespace ChessClubManager.DataAccess
             switch (rankDifference)
             {
                 case 1: return playerRank - 1;                                           // adjacent so move one rank up.
+                case 2: return playerRank - 2;                                           // edge case, cannot have same rank. promote winner to empty rank.
                 default: return playerRank - Convert.ToInt32(rankDifference / 2);        // move up ranking by split (ignore decimal).                 
             }
         }
