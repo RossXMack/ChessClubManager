@@ -66,21 +66,7 @@ namespace ChessClubManager.DataAccess
                 // 3. if the difference is 1 or -1, player is adjacent. (noted for Draw scenario).               
                 // 4. 0 is invalid and should never occur for either player. (see above validation).           
                 var rankDifference = (playerRank - opponentRank);
-
-                // ** Examples - Draw **
-                // D1. playerRank=10 opponentRank=11 result=Draw   rankDifference=-1   result= no change in rank.
-                // D2. playerRank=11 opponentRank=10 result=Draw   rankDifference=1    result= no change in rank.
-                // D3. playerRank=10 opponentRank=15 result=Draw   difference=-5       result= no change in rank.
-                // D4. playerRank=15 opponentRank=10 result=Draw   difference=5        result= move to rank 14 (move one rank up).
-
-                // ** Examples - Win **
-                // W1. playerRank=10 opponentRank=16 result=Win    rankDifference=-6   result= no change in rank.      
-                // W2. playerRank=16 opponentRank=10 result=Win    rankDifference=6    result= move to rank 13. (move up ((16-10) / 2)=3)
-
-                // ** Examples - Loss **
-                // W1. playerRank=10 opponentRank=16 result=Win    rankDifference=-6   result= move to rank 11 (move one rank down).      
-                // W2. playerRank=16 opponentRank=10 result=Win    rankDifference=6    result= no change in rank.
-
+                
                 switch (matchResult)
                 {
                     case MatchResult.Draw:
@@ -129,24 +115,19 @@ namespace ChessClubManager.DataAccess
         // 
         // Example: playerRank=15 opponentRank=10 difference=(15-10) / 2 = 2.5 => resulting rank=12.5 
         // the member at 12 who is not involved in the match, I'm assuming is still seen as the higher ranked player. 12 < 12.5
-        // so I've rounded the difference down.. meaning if result is 2.5.. result is 2.. player will move from 15 to 13, player 12 is uneffected.
+        // so I've disregarded the decimal.. meaning if result is 2.5.. result is 2.. player will move from 15 to 13, player 12 is uneffected.
 
         // ** one exception to this rule is when the players are adjacent and the lower ranked player wins.
         // Example: playerRank=12 opponentRank = 11 difference=(12-11) / 2 = 0.5 => resulting rank=11.5 
-        // In this one case scenario the loser according to rules loses a rank and moves to 12.. so the 11 position is vacated. 
-        // as 11.5 < 12, rather than rounding down I've increased the winning players rank by 1 to move him into positon 11.
-        // could also just round up the difference of 0.5 to 1
+        // In this one case scenario the loser according to rules, loses a rank and moves to 12.. so the 11 position is vacated. 
+        // as 11.5 < 12 in the adjacent scenario I've increased the winning players rank by 1 to move him into the losers position.        
         private int moveUpHalf(int playerRank, int rankDifference)
         {
-            // check for decimal
-            decimal rankDiffSplit = rankDifference / 2;
-
-            // mod rankDiffSplit to check if number is whole or decimal.
-            switch (rankDiffSplit % 1)
+            switch (rankDifference)
             {
-                case < 1: return playerRank - 1;                                           // adjacent so move one rank up.
-                default : return playerRank - Convert.ToInt32(rankDiffSplit);              // move up ranking by split (ignore decimal).                 
-            }            
+                case 1: return playerRank - 1;                                           // adjacent so move one rank up.
+                default: return playerRank - Convert.ToInt32(rankDifference / 2);        // move up ranking by split (ignore decimal).                 
+            }
         }
 
         #endregion

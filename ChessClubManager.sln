@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessClubManager", "ChessClubManager\ChessClubManager.csproj", "{E8E82636-2AA4-405E-B01F-985E95AE583F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessClubManager", "ChessClubManager\ChessClubManager.csproj", "{E8E82636-2AA4-405E-B01F-985E95AE583F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessClubManager.Tests", "ChessClubManager.Tests\ChessClubManager.Tests.csproj", "{EAA220CE-5C20-4E88-B107-9303E470D913}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8E82636-2AA4-405E-B01F-985E95AE583F} = {E8E82636-2AA4-405E-B01F-985E95AE583F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{E8E82636-2AA4-405E-B01F-985E95AE583F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8E82636-2AA4-405E-B01F-985E95AE583F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8E82636-2AA4-405E-B01F-985E95AE583F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAA220CE-5C20-4E88-B107-9303E470D913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA220CE-5C20-4E88-B107-9303E470D913}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAA220CE-5C20-4E88-B107-9303E470D913}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA220CE-5C20-4E88-B107-9303E470D913}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
