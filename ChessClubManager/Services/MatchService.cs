@@ -40,7 +40,7 @@ namespace ChessClubManager.DataAccess
                         participant,
                         member = dbContext.Members.Where(member => member.Id == participant.MemberId).ToList()
                     }).Where(participant => participant.participant.MatchId == match.Id).ToList()
-                }).ToList();
+                }).OrderByDescending(s => s.match.MatchDate).ToList();
 
                 var result = data.Select(oo => oo.match);
                 return result;

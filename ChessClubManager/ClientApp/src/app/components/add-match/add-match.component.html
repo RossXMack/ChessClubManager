@@ -6,67 +6,105 @@
   <div class="form-group row">
     <label class="control-lable col-md-12">Match Date</label>
     <div class="col-md-4">
-      <input class="form-control" type="text" formControlName="matchDate" />
+      <input class="form-control" type="date" required formControlName="matchDate">
     </div>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.matchDate.touched || submitted) &&
+          registerFormControl.matchDate.errors?.required
+            ">
+      Match Date is required.
+    </span>
   </div>
 
   <div class="form-group row">
     <label class="control-lable col-md-12">Games Played</label>
     <div class="col-md-4">
-      <input class="form-control" type="text" formControlName="gamesPlayed" />
+      <input class="form-control" type="number" min="1" required formControlName="gamesPlayed" />
     </div>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.gamesPlayed.touched || submitted) &&
+          registerFormControl.gamesPlayed.errors?.required
+            ">
+      Games played is required.
+    </span>
   </div>
 
   <div class="form-group row">
     <label class="control-lable col-md-12">Participant 1</label>
     <div class="col-md-4">
-      <select class="form-control" data-value="true" formControlName="participant1Id">
+      <select class="form-control" data-value="true" required formControlName="participant1Id">
         <option value="">-- Select Member --</option>
         <option *ngFor="let member of memberStubList" value="{{ member.id }}">
           {{ member.fullname }}
         </option>
       </select>
-       <!--<input class="form-control" type="text" formControlName="participant1Id" />-->
     </div>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.participant1Id.touched || submitted) &&
+          registerFormControl.participant1Id.errors?.required
+            ">
+      Participant 1 is required.
+    </span>
   </div>
 
   <div class="form-group row">
     <label class="control-lable col-md-12">Participant 1 Result</label>
     <div class="col-md-4">
-      <select class="form-control" data-value="true" formControlName="participant1Result">
+      <select class="form-control" data-value="true" required formControlName="participant1Result">
         <option value="">-- Select Result --</option>
         <option value=0>Draw</option>
         <option value=1>Win</option>
         <option value=2>Loss</option>
       </select>
-      <!--<input class="form-control" type="text" formControlName="participant1Result" />-->
     </div>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.participant1Result.touched || submitted) &&
+          registerFormControl.participant1Result.errors?.required
+            ">
+      Participant 1 result is required.
+    </span>
   </div>
 
   <div class="form-group row">
     <label class="control-lable col-md-12">Participant 2</label>
     <div class="col-md-4">
-      <select class="form-control" data-value="true" formControlName="participant2Id">
+      <select class="form-control" data-value="true" required formControlName="participant2Id">
         <option value="">-- Select Member --</option>
         <option *ngFor="let member of memberStubList" value="{{ member.id }}">
           {{ member.fullname }}
         </option>
       </select>
-      <!--<input class="form-control" type="text" formControlName="participant2Id" />-->
     </div>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.participant2Id.touched || submitted) &&
+          registerFormControl.participant2Id.errors?.required
+            ">
+      Participant 2 is required.
+    </span>
   </div>
 
   <div class="form-group row">
     <label class="control-lable col-md-12">Participant 2 Result</label>
     <div class="col-md-4">
-      <select class="form-control" data-value="true" formControlName="participant2Result">
+      <select class="form-control" data-value="true" required formControlName="participant2Result">
         <option value="">-- Select Result --</option>
         <option value=0>Draw</option>
         <option value=1>Win</option>
         <option value=2>Loss</option>
       </select>
-      <!--<input class="form-control" type="text" formControlName="participant2Result" />-->
     </div>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.participant2Result.touched || submitted) &&
+          registerFormControl.participant2Result.errors?.required
+            ">
+      Participant 2 result is required.
+    </span>
   </div>  
 
   <hr />

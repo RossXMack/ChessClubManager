@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FlatMatch, Match, MatchResult, Participant } from '../../models/match';
 import { Member } from '../../models/member';
@@ -15,7 +15,7 @@ import { MemberService } from '../../services/member.service';
 export class AddMatchComponent implements OnInit {
   
   matchForm: FormGroup;  
-  title = 'Create';
+  title = 'New Match';
   matchId: string = '0';
   errorMessage: any;
   submitted = false;
@@ -30,12 +30,12 @@ export class AddMatchComponent implements OnInit {
   ) {       
     this.matchForm = this.fb.group({
       id: [''],
-      matchDate: [this.datePipe.transform(Date(), "yyy-MM-dd")],
-      gamesPlayed: [1],      
-      participant1Id: [''],
-      participant1Result: [''],            
-      participant2Id: [''],
-      participant2Result: ['']      
+      matchDate: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required]],
+      gamesPlayed: [1, [Validators.required]],      
+      participant1Id: ['', [Validators.required]],
+      participant1Result: ['', [Validators.required]],            
+      participant2Id: ['', [Validators.required]],
+      participant2Result: ['', [Validators.required]]      
     })
   }
 
@@ -56,16 +56,12 @@ export class AddMatchComponent implements OnInit {
       .getMembers()
       .subscribe((data: Member[]) => {
         data.map(d => {
-          this.memberStubList.push({ id: d.id, fullname: d.name + " " + d.surname });
-          debugger
-
+          this.memberStubList.push({ id: d.id, fullname: d.name + " " + d.surname });          
         })
-      })
-      
+      })      
   }
 
-  private addMatch(): void {    
-    debugger
+  private addMatch(): void {        
     // assign to flat
     var flatMatch = this.matchForm.value;
     
@@ -100,8 +96,7 @@ export class AddMatchComponent implements OnInit {
     return match;
   }
 
-  save() {
-    debugger
+  save() {    
     this.submitted = true;
     if (!this.matchForm.valid) {
       return;

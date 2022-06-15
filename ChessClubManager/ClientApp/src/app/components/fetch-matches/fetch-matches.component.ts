@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Match } from '../../models/match';
+import { Match, MatchResult } from '../../models/match';
 import { MatchService } from '../../services/match.service';
 
 @Component({
@@ -10,16 +10,17 @@ import { MatchService } from '../../services/match.service';
 
 export class FetchMatchesComponent implements OnInit {
   public matches: Match[] = [];
+  eMatchResultType = MatchResult;
 
   constructor(private matchService: MatchService) { }
 
   ngOnInit(): void {
-    this.getMatches();
+    this.getMatches();    
   }
 
   getMatches(): void {    
     this.matchService
       .getMatches()
-      .subscribe((result) => { debugger;  (this.matches = result) });
+      .subscribe((result) => this.matches = result);
   }  
 }

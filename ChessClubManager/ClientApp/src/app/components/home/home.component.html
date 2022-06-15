@@ -8,9 +8,7 @@
     <tr>
       <th>Name</th>
       <th>Surname</th>
-      <th>Email</th>
-      <th>Birthday</th>
-      <th>Join Date</th>
+      <th>Email</th>         
       <th>Games Played</th>
       <th>Current Rank</th>
     </tr>
@@ -19,9 +17,7 @@
     <tr *ngFor="let member of members">
       <td> {{ member.name }}</td>
       <td> {{ member.surname }}</td>
-      <td> {{ member.email }}</td>
-      <td> {{ member.birthday | date: 'yyy-mm-dd' }}</td>
-      <td> {{ member.joinDate | date: 'yyy-mm-dd'  }}</td>      
+      <td> {{ member.email }}</td>            
       <td> {{ member.gamesPlayed }}</td>
       <td> {{ member.currentRank }}</td>
       <td></td>

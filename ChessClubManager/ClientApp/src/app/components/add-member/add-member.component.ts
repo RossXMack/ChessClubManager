@@ -13,7 +13,7 @@ import { MemberService } from '../../services/member.service';
 export class AddMemberComponent implements OnInit {
 
   memberForm: FormGroup;
-  title = 'Create';
+  title = 'Add Member';
   memberId: string = '0';
   errorMessage: any;
   submitted = false;
@@ -32,10 +32,10 @@ export class AddMemberComponent implements OnInit {
     this.memberForm = this.fb.group({
       id: [''],
       name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
-      email: [''],
-      birthday: [this.datePipe.transform(Date(), "yyy-MM-dd")],
-      joinDate: [this.datePipe.transform(Date(), "yyy-MM-dd")],
+      surname: ['** default test surname **', [Validators.required]],
+      email: ['** default test email **', [Validators.required]],
+      birthday: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required]],
+      joinDate: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required]],
       gamesPlayed: [0],
       currentRank: [0],
       created: [this.datePipe.transform(Date(), "yyy-MM-dd")],
@@ -46,11 +46,14 @@ export class AddMemberComponent implements OnInit {
   ngOnInit(): void {    
     if (this.memberId !== '0') {
 
-      this.title = 'Edit';
+      this.title = 'Edit Member';
 
       this.memberService.getMemberById(this.memberId).subscribe(
         (result: Member) => {
+          debugger
           this.memberForm.setValue(result);
+          this.memberForm.controls['birthday'].setValue(this.datePipe.transform(result.birthday, "yyy-MM-dd"));
+          this.memberForm.controls['joinDate'].setValue(this.datePipe.transform(result.birthday, "yyy-MM-dd"));
         },
         (error) => console.error(error)
       );
@@ -86,10 +89,10 @@ export class AddMemberComponent implements OnInit {
       return;
     }
 
-    if (this.title === 'Create') {
+    if (this.title === 'Add Member') {
       this.addMember();
     } else {
-      if (this.title === 'Edit') {
+      if (this.title === 'Edit Member') {
         this.updateMember();
       }
     }      

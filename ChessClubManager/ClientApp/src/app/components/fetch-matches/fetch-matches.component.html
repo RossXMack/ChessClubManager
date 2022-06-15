@@ -12,19 +12,23 @@
     <br/>
     <table class="table">
       <thead>
-        <tr>          
+        <tr>
           <th>Match Date</th>
-          <th>Player 1</th>
-          <th>Player 2</th>          
+          <th>Participant 1</th>
+          <th>Result</th>
+          <th>Participant 2</th>
+          <th>Result</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let match of matches">
           <td> {{ match.matchDate | date: 'yyy-mm-dd' }}</td>
           <td> {{ match.participants[0].member.name }} {{ match.participants[0].member.surname }}</td>
-          <td> {{ match.participants[1].member.name }} {{ match.participants[0].member.surname }}</td>                    
+          <td> {{ eMatchResultType[match.participants[0].matchResult] }} </td>
+          <td> {{ match.participants[1].member.name }} {{ match.participants[0].member.surname }}</td>
+          <td> {{ eMatchResultType[match.participants[1].matchResult] }} </td>
           <td></td>
-          <td>            
+          <td>
           </td>
         </tr>
       </tbody>
