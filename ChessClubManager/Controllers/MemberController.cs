@@ -29,7 +29,7 @@ namespace ChessClubManager.Controllers
         {
             return memberService.GetMember(id);
         }
-
+        
         [HttpPost]
         public int Post([FromBody] Member member)
         {
@@ -93,6 +93,6 @@ namespace ChessClubManager.Controllers
         [HttpDelete("{id}")]
         public int Delete(string id) {
             return memberService.DeleteMember(id);
-        }
+        }        
     }
 }

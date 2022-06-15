@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +22,8 @@ export class AddMemberComponent implements OnInit {
     private fb: FormBuilder,
     private avRoute: ActivatedRoute,
     private memberService: MemberService,
-    private router: Router
+    private router: Router,
+    private datePipe: DatePipe
   ) {    
     if (this.avRoute.snapshot.params['id']) {
       this.memberId = this.avRoute.snapshot.params['id'];
@@ -32,13 +34,16 @@ export class AddMemberComponent implements OnInit {
       name: ['', [Validators.required]],
       surname: ['', [Validators.required]],
       email: [''],
-      birthday: [''],
-      joinDate: ['']
+      birthday: [this.datePipe.transform(Date(), "yyy-MM-dd")],
+      joinDate: [this.datePipe.transform(Date(), "yyy-MM-dd")],
+      gamesPlayed: [0],
+      currentRank: [0],
+      created: [this.datePipe.transform(Date(), "yyy-MM-dd")],
+      updated: [this.datePipe.transform(Date(), "yyy-MM-dd")]
     })
   }
 
-  ngOnInit(): void {
-    debugger
+  ngOnInit(): void {    
     if (this.memberId !== '0') {
 
       this.title = 'Edit';
@@ -66,6 +71,7 @@ export class AddMemberComponent implements OnInit {
   }
 
   private updateMember(): void {
+    debugger
     this.memberService.updateMember(this.memberForm.value).subscribe(
       () => {
         this.router.navigate(['fetch-members']);

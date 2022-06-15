@@ -40,7 +40,7 @@ namespace ChessClubManager.DataAccess
                 throw;
             }
         }
-
+        
         public Member GetMember(string id)
         {
             try
@@ -84,7 +84,7 @@ namespace ChessClubManager.DataAccess
         public int UpdateMember(Member member)
         {
             try
-            {
+            {                                
                 // update audit info                
                 member.Updated = DateTime.Now;
                 dbContext.Entry(member).State = EntityState.Modified;

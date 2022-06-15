@@ -11,7 +11,8 @@ namespace ChessClubManager.Models
         public string Id { get; set; }
         public string MatchId { get; set; }
         public string MemberId { get; set; }
-        public MatchResult MatchResult { get; set; }
+        public MatchResult MatchResult { get; set; }        
+        public Member Member { get; set;  }                
 
         #region Audits
 

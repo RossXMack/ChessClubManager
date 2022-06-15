@@ -32,10 +32,14 @@ namespace ChessClubManager.DataAccess
         public IEnumerable<Match> GetAllMatches()
         {
             try
-            {
-                var data = dbContext.Matches.Select(match => new {
+            {                
+                var data = dbContext.Matches.Select(match => new
+                {
                     match,
-                    Participants = dbContext.MatchParticipants.Where(participant => participant.MatchId == match.Id).ToList()
+                    Participants = dbContext.MatchParticipants.Select(participant => new { 
+                        participant,
+                        member = dbContext.Members.Where(member => member.Id == participant.MemberId).ToList()
+                    }).Where(participant => participant.participant.MatchId == match.Id).ToList()
                 }).ToList();
 
                 var result = data.Select(oo => oo.match);

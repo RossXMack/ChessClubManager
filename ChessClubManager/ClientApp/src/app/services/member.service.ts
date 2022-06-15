@@ -19,7 +19,7 @@ export class MemberService {
   getMemberById(id: string): Observable<Member> {
     return this.http.get<Member>(this.baseURL + id);
   }
-
+  
   addMember(member: Member): Observable<any> {    
     return this.http.post(this.baseURL, member);
   }

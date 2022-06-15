@@ -1,0 +1,77 @@
+<h1>Match </h1>
+<h3> {{ title }} </h3>
+<hr />
+
+<form [formGroup]="matchForm" (ngSubmit)="save()">
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Match Date</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="matchDate" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Games Played</label>
+    <div class="col-md-4">
+      <input class="form-control" type="text" formControlName="gamesPlayed" />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Participant 1</label>
+    <div class="col-md-4">
+      <select class="form-control" data-value="true" formControlName="participant1Id">
+        <option value="">-- Select Member --</option>
+        <option *ngFor="let member of memberStubList" value="{{ member.id }}">
+          {{ member.fullname }}
+        </option>
+      </select>
+       <!--<input class="form-control" type="text" formControlName="participant1Id" />-->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Participant 1 Result</label>
+    <div class="col-md-4">
+      <select class="form-control" data-value="true" formControlName="participant1Result">
+        <option value="">-- Select Result --</option>
+        <option value=0>Draw</option>
+        <option value=1>Win</option>
+        <option value=2>Loss</option>
+      </select>
+      <!--<input class="form-control" type="text" formControlName="participant1Result" />-->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Participant 2</label>
+    <div class="col-md-4">
+      <select class="form-control" data-value="true" formControlName="participant2Id">
+        <option value="">-- Select Member --</option>
+        <option *ngFor="let member of memberStubList" value="{{ member.id }}">
+          {{ member.fullname }}
+        </option>
+      </select>
+      <!--<input class="form-control" type="text" formControlName="participant2Id" />-->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="control-lable col-md-12">Participant 2 Result</label>
+    <div class="col-md-4">
+      <select class="form-control" data-value="true" formControlName="participant2Result">
+        <option value="">-- Select Result --</option>
+        <option value=0>Draw</option>
+        <option value=1>Win</option>
+        <option value=2>Loss</option>
+      </select>
+      <!--<input class="form-control" type="text" formControlName="participant2Result" />-->
+    </div>
+  </div>  
+
+  <hr />
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button class="btn btn-danger" (click)="cancel()">Cancel</button>
+  </div>
+</form>

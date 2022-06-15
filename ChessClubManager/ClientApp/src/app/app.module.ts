@@ -9,6 +9,9 @@ import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchMembersComponent } from './components/fetch-members/fetch-members.component';
 import { AddMemberComponent } from './components/add-member/add-member.component';
+import { FetchMatchesComponent } from './components/fetch-matches/fetch-matches.component';
+import { AddMatchComponent } from './components/add-match/add-match.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,9 @@ import { AddMemberComponent } from './components/add-member/add-member.component
     NavMenuComponent,
     HomeComponent,
     FetchMembersComponent,
-    AddMemberComponent
+    FetchMatchesComponent,
+    AddMemberComponent,
+    AddMatchComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -25,11 +30,13 @@ import { AddMemberComponent } from './components/add-member/add-member.component
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'fetch-members', component: FetchMembersComponent },
+      { path: 'fetch-matches', component: FetchMatchesComponent },
       { path: 'register-member', component: AddMemberComponent },
+      { path: 'register-match', component: AddMatchComponent },
       { path: 'member/edit/:id', component: AddMemberComponent }
     ])
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

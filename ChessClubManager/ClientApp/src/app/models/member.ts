@@ -7,4 +7,6 @@ export class Member {
   joinDate: Date;
   gamesPlayed: number;
   currentRank: number;
+  created: Date;
+  updated: Date;
 }

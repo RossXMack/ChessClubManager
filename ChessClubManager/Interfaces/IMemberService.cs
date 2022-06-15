@@ -9,7 +9,7 @@ namespace ChessClubManager.Interfaces
 
         Member GetMember(string id);
 
-        IEnumerable<Member> GetAllMembers();
+        IEnumerable<Member> GetAllMembers();        
 
         int UpdateMember(Member member);
         
