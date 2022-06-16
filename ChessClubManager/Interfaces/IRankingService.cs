@@ -5,8 +5,8 @@ namespace ChessClubManager.Interfaces
 {
     public interface IRankingService
     {
-        void CalculateNewRankings(Match match);
+        void CalcParticipantsRanking(Match match);
 
-        void UpdateRankList(int removedRank);
+        void UpdateDeletedMemberRanking(Member member);
     }
 }

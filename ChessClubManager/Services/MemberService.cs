@@ -104,12 +104,42 @@ namespace ChessClubManager.DataAccess
             try
             {
                 Member member = dbContext.Members.Find(id);
-                // todo: checkForNulls.. all over.
+                if(member == null)
+                {
+                    throw new Exception("Exception - DeleteMember(): Invalid member id, member cannot be null");
+                }
+
+                #region Ranking
+                // move the members rank to last so that when we delete him it won't leave a gap in the rank list.
+                this.rankingService.UpdateDeletedMemberRanking(member);
+                #endregion
+
+                #region Cascading
+                // cascade delete to matches and match participants that contain this member.
+                var data = dbContext.MatchParticipants.Select(participant => new
+                {
+                    participant,
+                    match = dbContext.Matches.Select(match => new {
+                        match,
+                        participants = dbContext.MatchParticipants.Where(participant => participant.MatchId == match.Id).ToList()
+                    }).Where(m => m.match.Id == participant.MatchId).FirstOrDefault()
+                }).Where(p => p.participant.MemberId == id).ToList();
+
+                if (data != null)
+                {
+                    data.ForEach(item =>
+                    {
+                        item.match.participants.ForEach(p =>
+                        {
+                            dbContext.MatchParticipants.Remove(p);
+                        });
+
+                        dbContext.Matches.Remove(item.match.match);
+                    });
+                }
+                #endregion
 
                 dbContext.Members.Remove(member);
-
-                // we need to update the rank list after deleting the member as each person behind him has to move up in rank to fill the gap.
-                this.rankingService.UpdateRankList(member.CurrentRank);
 
                 dbContext.SaveChanges();
 

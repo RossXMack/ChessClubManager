@@ -102,7 +102,7 @@ namespace ChessClubManager.DataAccess
                 dbContext.Matches.Add(match);
 
                 // calculate new rankings
-                this.rankingService.CalculateNewRankings(match);                                
+                this.rankingService.CalcParticipantsRanking(match);                                
 
                 dbContext.SaveChanges();
 
