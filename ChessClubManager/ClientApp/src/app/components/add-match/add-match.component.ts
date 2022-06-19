@@ -35,7 +35,7 @@ export class AddMatchComponent implements OnInit {
       participant1Id: ['', [Validators.required]],
       participant1Result: ['', [Validators.required]],            
       participant2Id: ['', [Validators.required]],
-      participant2Result: ['', [Validators.required]]      
+      participant2Result: ['', Validators.required]      
     })
   }
 
@@ -96,13 +96,30 @@ export class AddMatchComponent implements OnInit {
     return match;
   }
 
-  save() {    
+  save() {
+    debugger
+  
     this.submitted = true;
     if (!this.matchForm.valid) {
       return;
     }
     
     this.addMatch();          
-  }  
+  }
+
+  onChangeRes1($event) {
+    debugger
+    if ($event == '0') {
+      this.matchForm.controls['participant2Result'].setValue(0);
+    }
+
+    if ($event == '1') {
+      this.matchForm.controls['participant2Result'].setValue(2);
+    } 
+
+    if ($event == '2') {
+      this.matchForm.controls['participant2Result'].setValue(1);
+    }
+  }
 }
 

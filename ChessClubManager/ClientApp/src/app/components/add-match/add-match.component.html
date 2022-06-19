@@ -1,4 +1,5 @@
 <h1>Match </h1>
+<br />
 <h3> {{ title }} </h3>
 <hr />
 
@@ -30,83 +31,74 @@
       Games played is required.
     </span>
   </div>
+  <br />
 
   <div class="form-group row">
-    <label class="control-lable col-md-12">Participant 1</label>
-    <div class="col-md-4">
+    <div class="col-md-6">
+      <label class="control-lable">Participant 1</label>
       <select class="form-control" data-value="true" required formControlName="participant1Id">
         <option value="">-- Select Member --</option>
         <option *ngFor="let member of memberStubList" value="{{ member.id }}">
           {{ member.fullname }}
         </option>
       </select>
+      <span class="text-danger"
+            *ngIf="
+              (registerFormControl.participant1Id.touched || submitted) &&
+           registerFormControl.participant1Id.errors?.required
+              ">
+        Participant 1 is required.
+      </span>
     </div>
-    <span class="text-danger"
-          *ngIf="
-            (registerFormControl.participant1Id.touched || submitted) &&
-          registerFormControl.participant1Id.errors?.required
-            ">
-      Participant 1 is required.
-    </span>
-  </div>
 
-  <div class="form-group row">
-    <label class="control-lable col-md-12">Participant 1 Result</label>
-    <div class="col-md-4">
-      <select class="form-control" data-value="true" required formControlName="participant1Result">
+    <div class="col-md-6">
+      <label class="control-lable">Result</label>
+      <select class="form-control" data-value="true" required formControlName="participant1Result" (ngModelChange)="onChangeRes1($event)">
         <option value="">-- Select Result --</option>
         <option value=0>Draw</option>
         <option value=1>Win</option>
         <option value=2>Loss</option>
       </select>
+      <span class="text-danger"
+            *ngIf="
+              (registerFormControl.participant1Result.touched || submitted) &&
+            registerFormControl.participant1Result.errors?.required
+              ">
+        Participant 1 result is required.
+      </span>
     </div>
-    <span class="text-danger"
-          *ngIf="
-            (registerFormControl.participant1Result.touched || submitted) &&
-          registerFormControl.participant1Result.errors?.required
-            ">
-      Participant 1 result is required.
-    </span>
   </div>
 
   <div class="form-group row">
-    <label class="control-lable col-md-12">Participant 2</label>
-    <div class="col-md-4">
+    <div class="col-md-6">
+      <label class="control-lable">Participant 2</label>
       <select class="form-control" data-value="true" required formControlName="participant2Id">
         <option value="">-- Select Member --</option>
         <option *ngFor="let member of memberStubList" value="{{ member.id }}">
           {{ member.fullname }}
         </option>
       </select>
+      <span class="text-danger"
+            *ngIf="
+              (registerFormControl.participant2Id.touched || submitted) &&
+           registerFormControl.participant2Id.errors?.required
+              ">
+        Participant 2 is required.
+      </span>
     </div>
-    <span class="text-danger"
-          *ngIf="
-            (registerFormControl.participant2Id.touched || submitted) &&
-          registerFormControl.participant2Id.errors?.required
-            ">
-      Participant 2 is required.
-    </span>
-  </div>
 
-  <div class="form-group row">
-    <label class="control-lable col-md-12">Participant 2 Result</label>
-    <div class="col-md-4">
-      <select class="form-control" data-value="true" required formControlName="participant2Result">
-        <option value="">-- Select Result --</option>
+    <div class="col-md-6">
+      <label class="control-lable">Result</label>
+      <select class="form-control" data-value="true" required disabled formControlName="participant2Result" [(ngModel)]="p2Result">
+        <option value=""></option>
         <option value=0>Draw</option>
         <option value=1>Win</option>
         <option value=2>Loss</option>
       </select>
     </div>
-    <span class="text-danger"
-          *ngIf="
-            (registerFormControl.participant2Result.touched || submitted) &&
-          registerFormControl.participant2Result.errors?.required
-            ">
-      Participant 2 result is required.
-    </span>
-  </div>  
+  </div>
 
+  <br />
   <hr />
   <div class="form-group">
     <button type="submit" class="btn btn-primary">Save</button>

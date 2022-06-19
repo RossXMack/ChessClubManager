@@ -31,11 +31,19 @@ namespace ChessClubManager.DataAccess
         {
             try
             {
+                // get participant 1
+                Member participant1 = dbContext.Members.Find(match.Participants[0].MemberId);
+                int participant1Rank = participant1.CurrentRank;
+
+                // get participant 2
+                Member participant2 = dbContext.Members.Find(match.Participants[1].MemberId);
+                int participant2Rank = participant2.CurrentRank;
+
                 // Update Match Participant 1's ranking               
-                this.UpdateParticipantRanking(match.Participants[0].MemberId, match.Participants[1].MemberId, match.Participants[0].MatchResult);
+                this.UpdateParticipantRanking(participant1.Id, participant1Rank, participant2Rank, match.Participants[0].MatchResult);
 
                 // Update Match Participant 2's ranking
-                this.UpdateParticipantRanking(match.Participants[1].MemberId, match.Participants[0].MemberId, match.Participants[1].MatchResult);
+                this.UpdateParticipantRanking(participant2.Id, participant2Rank, participant1Rank, match.Participants[1].MatchResult);
             }
             catch
             {
@@ -55,16 +63,11 @@ namespace ChessClubManager.DataAccess
         #region Private Methods
 
         // Calculates a new ranking for given participant and updates the effected current ranks in the members table. 
-        private void UpdateParticipantRanking(string participantId, string opponentId, MatchResult result)
+        private void UpdateParticipantRanking(string participantId, int participantRank, int opponentRank, MatchResult result)
         {
             try
             {
-                // get participants current rank
-                var participantRank = dbContext.Members.Find(participantId).CurrentRank;
-                // get opponents current rank
-                var opponentRank = dbContext.Members.Find(opponentId).CurrentRank;
-                // calculate participants new rank
-                var participantNewRank = calcNewParticipantRanking(participantRank, opponentRank, result);
+                int participantNewRank = calcNewParticipantRanking(participantRank, opponentRank, result);
 
                 // if our participants ranking is unchanged then return;
                 if (participantNewRank != participantRank)
@@ -86,8 +89,8 @@ namespace ChessClubManager.DataAccess
         private void UpdateMemberRankings(string memberId, int memberRank, int memberNewRank)
         {
             // get our ranking list boundaries for sublist using our ranking change - rankings above this and below this would remain uneffected.
-            var higherRankBoundary = memberRank < memberNewRank ? memberRank : memberNewRank;
-            var lowerRankBoundary = memberRank > memberNewRank ? memberRank : memberNewRank;
+            int higherRankBoundary = memberRank < memberNewRank ? memberRank : memberNewRank;
+            int lowerRankBoundary = memberRank > memberNewRank ? memberRank : memberNewRank;
 
             // we don't want to db update the entire members list, so we getting a subsection of the entire list demarcated by our boundaries.
             var subList = dbContext.Members
@@ -132,7 +135,7 @@ namespace ChessClubManager.DataAccess
                 // 2. if the difference is negative, participant is ranked higher.            
                 // 3. if the difference is 1 or -1, participant is adjacent. (noted for draw scenario).               
                 // 4. 0 is invalid and should never occur for either participant. (see above validation).           
-                var rankDifference = (participantRank - opponentRank);
+                int rankDifference = (participantRank - opponentRank);
                 
                 switch (matchResult)
                 {
@@ -140,10 +143,10 @@ namespace ChessClubManager.DataAccess
                         {
                             switch (rankDifference)
                             {
-                                case < -1:  return participantRank - 1;                          // participant is ranked higher - move one rank up.
-                                case > 1:   return participantRank;                              // participant is ranked lower - same rank.                                
-                                default:    return participantRank;                              // participants are adjacent - same rank.                                                                    
-                            }                            
+                                case < -1: return participantRank;                            // participant is ranked higher - same rank.
+                                case > 1: return participantRank - 1;                         // participant is ranked lower - move up 1 rank.                                
+                                default: return participantRank;                              // participants are adjacent - same rank.                                                                    
+                            }
                         }                        
                     case MatchResult.Win:
                         {

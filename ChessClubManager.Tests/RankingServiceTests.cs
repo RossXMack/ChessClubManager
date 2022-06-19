@@ -138,8 +138,8 @@ namespace ChessClubManager.Tests
                         {
                             switch (rankDifference)
                             {
-                                case < -1: return participantRank - 1;                          // participant is ranked higher - move one rank up.
-                                case > 1: return participantRank;                              // participant is ranked lower - same rank.                                
+                                case < -1: return participantRank;                            // participant is ranked higher - same rank.
+                                case > 1: return participantRank - 1;                         // participant is ranked lower - move up 1 rank.                                
                                 default: return participantRank;                              // participants are adjacent - same rank.                                                                    
                             }
                         }
