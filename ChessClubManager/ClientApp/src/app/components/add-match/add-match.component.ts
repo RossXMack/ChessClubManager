@@ -6,6 +6,7 @@ import { FlatMatch, Match, MatchResult, Participant } from '../../models/match';
 import { Member } from '../../models/member';
 import { MatchService } from '../../services/match.service';
 import { MemberService } from '../../services/member.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-match',
@@ -30,8 +31,8 @@ export class AddMatchComponent implements OnInit {
   ) {       
     this.matchForm = this.fb.group({
       id: [''],
-      matchDate: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required]],
-      gamesPlayed: [1, [Validators.required]],      
+      matchDate: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required, this.dateValidator]],
+      gamesPlayed: [1, [Validators.required, this.gamesPlayedValidator]],      
       participant1Id: ['', [Validators.required]],
       participant1Result: ['', [Validators.required]],            
       participant2Id: ['', [Validators.required]],
@@ -120,6 +121,27 @@ export class AddMatchComponent implements OnInit {
     if ($event == '2') {
       this.matchForm.controls['participant2Result'].setValue(1);
     }
+  }
+
+  dateValidator(control): { [s: string]: boolean } {
+    if (control.value) {
+      const date = moment(control.value);
+      const today = moment();
+      if (date.isAfter(today)) {
+        return { 'invalidDate': true }
+      }
+    }
+    return null;
+  }
+
+  gamesPlayedValidator(control): { [s: string]: boolean } {
+    debugger
+    if (control.value || control.value == 0) {
+      if (control.value <= 0) {
+        return { 'invalidGamesPlayed': true }
+      }
+    }
+    return null;
   }
 }
 

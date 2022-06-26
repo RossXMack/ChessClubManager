@@ -58,6 +58,13 @@
             ">
       Birthday is required.
     </span>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.birthday.touched || submitted) &&
+          registerFormControl.birthday.errors?.invalidDate
+            ">
+      Birthday cannot be in the future.
+    </span>
   </div>
 
   <div class="form-group row">
@@ -71,6 +78,13 @@
           registerFormControl.joinDate.errors?.required
             ">
       Join Date is required.
+    </span>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.joinDate.touched || submitted) &&
+          registerFormControl.joinDate.errors?.invalidDate
+            ">
+      Join Date cannot be in the future.
     </span>
   </div>
 

@@ -16,6 +16,13 @@
             ">
       Match Date is required.
     </span>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.matchDate.touched || submitted) &&
+          registerFormControl.matchDate.errors?.invalidDate
+            ">
+      Match Date cannot be in the future.
+    </span>
   </div>
 
   <div class="form-group row">
@@ -29,6 +36,13 @@
           registerFormControl.gamesPlayed.errors?.required
             ">
       Games played is required.
+    </span>
+    <span class="text-danger"
+          *ngIf="
+            (registerFormControl.gamesPlayed.touched || submitted) &&
+          registerFormControl.gamesPlayed.errors?.invalidGamesPlayed
+            ">
+      Games played cannot be less than 1.
     </span>
   </div>
   <br />

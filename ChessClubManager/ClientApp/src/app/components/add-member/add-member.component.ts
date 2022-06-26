@@ -4,6 +4,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Member } from '../../models/member';
 import { MemberService } from '../../services/member.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-member',
@@ -34,8 +35,8 @@ export class AddMemberComponent implements OnInit {
       name: ['', [Validators.required]],
       surname: ['** default test surname **', [Validators.required]],
       email: ['** default test email **', [Validators.required]],
-      birthday: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required]],
-      joinDate: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required]],
+      birthday: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required, this.dateValidator]],
+      joinDate: [this.datePipe.transform(Date(), "yyy-MM-dd"), [Validators.required, this.dateValidator]],
       gamesPlayed: [0],
       currentRank: [0],
       created: [this.datePipe.transform(Date(), "yyy-MM-dd")],
@@ -50,7 +51,6 @@ export class AddMemberComponent implements OnInit {
 
       this.memberService.getMemberById(this.memberId).subscribe(
         (result: Member) => {
-          debugger
           this.memberForm.setValue(result);
           this.memberForm.controls['birthday'].setValue(this.datePipe.transform(result.birthday, "yyy-MM-dd"));
           this.memberForm.controls['joinDate'].setValue(this.datePipe.transform(result.birthday, "yyy-MM-dd"));
@@ -74,7 +74,6 @@ export class AddMemberComponent implements OnInit {
   }
 
   private updateMember(): void {
-    debugger
     this.memberService.updateMember(this.memberForm.value).subscribe(
       () => {
         this.router.navigate(['fetch-members']);
@@ -100,6 +99,17 @@ export class AddMemberComponent implements OnInit {
 
   public cancel() {
     this.router.navigate(['fetch-members']);
+  }
+
+  dateValidator(control): { [s: string]: boolean } {
+    if (control.value) {
+      const date = moment(control.value);
+      const today = moment();
+      if (date.isAfter(today)) {
+        return { 'invalidDate': true }
+      }
+    }
+    return null;
   }
 }
 

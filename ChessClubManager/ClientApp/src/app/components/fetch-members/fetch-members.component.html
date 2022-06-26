@@ -25,8 +25,8 @@
           <td> {{ member.name }}</td>
           <td> {{ member.surname }}</td>
           <td> {{ member.email }}</td>
-          <td> {{ member.birthday | date: 'yyy-mm-dd' }}</td>
-          <td> {{ member.joinDate | date: 'yyy-mm-dd' }}</td>
+          <td> {{ member.birthday | date: 'yyyy-MM-dd' }}</td>
+          <td> {{ member.joinDate | date: 'yyyy-MM-dd' }}</td>
           <td></td>
           <td>
             <button class="btn btn-outline-dark"
@@ -35,7 +35,7 @@
               Edit
             </button>
             <button class="btn btn-outline-danger"
-                    (click)="delete(member.id)">
+                    (click)="delete(member.id, member.name)">
               <span><i class="fa fa-trash" aria-hidden="true"></i></span>
               Delete
             </button>

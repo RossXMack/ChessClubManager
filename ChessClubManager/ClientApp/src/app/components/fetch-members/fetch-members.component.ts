@@ -23,9 +23,9 @@ export class FetchMembersComponent implements OnInit {
       .subscribe((result) => (this.members = result));
   }
 
-  delete(memberId: string): void {
+  delete(memberId: string, memberName: string): void {
     const ans = confirm(
-      'Do you want to delete the member with Id: ' + memberId
+      'Do you want to delete the member with Name: ' + memberName
     )
     if (ans) {
       this.memberService.deleteMember(memberId).subscribe(

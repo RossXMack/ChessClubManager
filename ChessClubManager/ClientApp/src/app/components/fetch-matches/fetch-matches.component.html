@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let match of matches">
-          <td> {{ match.matchDate | date: 'yyy-mm-dd' }}</td>
+          <td> {{ match.matchDate | date: 'yyyy-MM-dd' }}</td>
           <td> {{ match.participants[0].member.name }} {{ match.participants[0].member.surname }}</td>
           <td> {{ eMatchResultType[match.participants[0].matchResult] }} </td>
           <td> {{ match.participants[1].member.name }} {{ match.participants[0].member.surname }}</td>
