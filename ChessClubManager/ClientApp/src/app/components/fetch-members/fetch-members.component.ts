@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { Member } from '../../models/member';
 import { MemberService } from '../../services/member.service';
 
@@ -9,12 +9,15 @@ import { MemberService } from '../../services/member.service';
 })
 
 export class FetchMembersComponent implements OnInit {
+  @ViewChild('AddMember', null) addMemElement: ElementRef;
   public members: Member[] = [];
 
   constructor(private memberService: MemberService) { }
 
   ngOnInit(): void {
     this.getMembers();
+
+    this.addMemElement.nativeElement.focus();
   }
 
   getMembers(): void {    

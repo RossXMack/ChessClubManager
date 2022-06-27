@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Member } from '../../models/member';
@@ -12,7 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./add-member.component.css']
 })
 export class AddMemberComponent implements OnInit {
-
+  @ViewChild('Name', null) nameElement: ElementRef;
   memberForm: FormGroup;
   title = 'Add Member';
   memberId: string = '0';
@@ -57,6 +57,8 @@ export class AddMemberComponent implements OnInit {
         },
         (error) => console.error(error)
       );
+    } else {
+      this.nameElement.nativeElement.focus();
     }
   }
 

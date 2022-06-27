@@ -99,7 +99,7 @@ namespace ChessClubManager.Tests
             // L4. participantRank=10 opponentRank=11 result=Loss
             // Checking adjacent test.
             var resultL4 = calcNewParticipantRanking(10, 11, MatchResult.Loss);
-            Assert.Equal(11, resultL3);
+            Assert.Equal(11, resultL4);
 
             // W5. participantRank=1 opponentRank=2 result=Win
             // Check boundary.

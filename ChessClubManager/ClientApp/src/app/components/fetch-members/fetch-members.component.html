@@ -3,10 +3,10 @@
     <p *ngIf="!members"><em>Loading....</em></p>
     
     <div>
-      <button class="btn btn-primary" [routerLink]="['/register-member']">
+      <button class="btn btn-primary" #AddMember [routerLink]="['/register-member']">
         <span><i class="fa fa-user-plus" aria-hidden="true"></i></span> Add new
         member
-      </button>
+      </button>      
     </div>
 
     <br/>
